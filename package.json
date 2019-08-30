@@ -1,0 +1,17 @@
+{
+  "name": "news",
+  "version": "1.0.0",
+  "description": "news-updates",
+  "main": "rss.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^11.5.1",
+    "dotenv": "^8.1.0",
+    "dotenv-flow": "^3.1.0",
+    "rss-parser": "^3.7.2"
+  }
+}
