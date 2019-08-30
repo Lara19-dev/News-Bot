@@ -11,7 +11,7 @@ let Parser = require('rss-parser');
 let parser = new Parser();
 const FoxSources = ['http://feeds.foxnews.com/foxnews/latest', ' http://feeds.foxnews.com/foxnews/scitech', ' http://feeds.foxnews.com/foxnews/politics', 'http://feeds.foxnews.com/foxnews/health'];
 const CNNSources = ['http://rss.cnn.com/rss/edition_space.rss', ' http://rss.cnn.com/rss/edition_technology.rss', 'http://rss.cnn.com/rss/edition_world.rss', 'http://rss.cnn.com/rss/edition.rss', 'http://rss.cnn.com/rss/edition_travel.rss'];
-let _channels = '616788311347953665';
+let _channels = '571007246931066891';
 
 client.once('ready', async () => {
     console.log(`Logged in as ${client.user.tag}!`);
