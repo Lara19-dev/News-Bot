@@ -61,18 +61,32 @@ let _setThumbnail = provider => {
 
 client.on('message', async message => {
     let msg = message.content.toLowerCase();
+    if(message.channel.type == "dm"){
+        if(message.author.bot)return
+        if(msg == `${prefix}invite`){
+            let invite = new RichEmbed()
+            .setColor('#FFFFFF')
+            .setAuthor(`HI ${message.author.username}, I post news and updates!`, client.user.avatarURL)
+            .setThumbnail(client.user.avatarURL)
+            .addField("If you want to invite me in your guild,\nyou may authorize me with this link:", "https://discordapp.com/api/oauth2/authorize?client_id=616755334933119002&permissions=2048&scope=bot")
+            .addField("If you do, simply ping me for instructions", "I hope I can help keep you updated with news!")
+            .setFooter(`This application is brought to you by ${client.users.get(owner).tag}`)
+            message.channel.send(invite);
+        }else{
+        message.channel.send(`Hello there, I am ${client.user.username}. Nice to meet you, ${message.author.username}. \nIf you are interested to use my features for your guild and deliver news, do ${prefix}invite`);
+        }
+    return;  
+    } 
     if((msg == `${prefix }assignnews` && (message.member.hasPermission('MANAGE_CHANNELS')))){
         if(_channels.includes(message.channel.id)){
             message.channel.send("News will no longer be sent in this channel");
                 _channels = _channels.filter( _specifiedChannel => {
                     return _specifiedChannel != message.channel.id;
                 });
-            console.log(_channels);
         }else{
             _channels.push(message.channel.id);
             message.channel.send("News will now be sent in this channel.");
             await client.users.get(owner).send(`Channel ID: \`${message.channel.id}\` added to cache from Guild \`${message.guild.name}\``)
-            // console.log(_channels);
         }
     }
     if (message.content == client.user && message.member.hasPermission('MANAGE_CHANNELS')){
@@ -80,8 +94,9 @@ client.on('message', async message => {
         .setAuthor("News-bot at your service.", client.user.avatarURL)
         .setThumbnail(client.user.avatarURL)
         .setColor("#FFFFFF")
-        .addField(`My prefix is: \`${prefix}\``,"News-bot sends news and updates from CNN, \n FOX news, and Space.com every 10 minutes or so")
+        .addField(`My prefix is: \`${prefix}\``,`${client.user.username} sends news and updates from CNN, \n FOX news, and Space.com every 10 minutes or so`)
         .addField(`To register a channel do, ${prefix}assignnews`, "Please be informed that you need at least\n\"MANAGE MESSAGES\" permission to do so")
+        .addField(`If you are interested to have ${client.user.username} in your server,`, `Please dm me with ${prefix}invite for details` )
         .setFooter(`This application is brought to you by ${client.users.get(owner).tag}`)
 
         message.channel.send(help);
