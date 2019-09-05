@@ -2,11 +2,11 @@
   "name": "news",
   "version": "1.0.0",
   "description": "news-updates",
-  "main": "rss.js",
+  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js"
   },
-  "author": "",
+  "author": "Aurora Paisley",
   "license": "ISC",
   "dependencies": {
     "discord.js": "^11.5.1",
