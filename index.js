@@ -20,7 +20,7 @@ let _channels = [];
 
 client.once('ready', async () => {
     console.log(`Logged in as ${client.user.tag}!`);
-    // setInterval(_rss, 10000);
+    client.users.get(owner).send(`${client.user.username} has restarted`);
 });
 
 // Returns a random number based on an array's index
