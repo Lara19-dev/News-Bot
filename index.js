@@ -160,7 +160,7 @@ setInterval(()=>{
     
     _rss(newsSeed);
     // Resets the array once it reaches assigned threshold
-    if(doneNews.length >= 128){doneNews = []};
+    if(doneNews.length >= 64){doneNews = []};
 },parseInt(interval));
 
 // Function basically do the task again
