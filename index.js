@@ -128,8 +128,16 @@ let _rss = async (source) => {
     }    
     // Assigns a value based on the number of items in the parsed rss to be used as the base index
     this.index = await randIndex(this.feed.items);
-
-
+    
+    /* Reads the articles date and splits the year from the format,if not 
+        If not 2019, then redo */
+    let postedAt = await this.article_postedAt[this.index].split(" ");
+    let Outdated = await postedAt[3] < 2019;
+    if(Outdated){
+        await redo();
+        return
+    }
+    
     // Creates RichEmbed object with respective formatting
     this.news = new RichEmbed()
     .setAuthor(this.feed.title.includes("CNN") ? this.feed.title = "CNN.com" : this.feed.title, client.user.avatarURL)
