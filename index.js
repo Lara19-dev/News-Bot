@@ -17,7 +17,7 @@ const client = new Client();
 const allSources = [FoxSources, CNNSources, SpaceSources];
 
 let doneNews = [];
-let channelsRss = [];
+let channelsRss = ['571007246931066891'];
 
 client.once('ready', async () => {
   console.log(`Logged in as ${client.user.tag}!`);
@@ -63,22 +63,22 @@ function newsOutlet(provider) {
 async function rssTask(source) {
   // Parses the URL into JSON
   this.feed = await parser.parseURL(source);
-  this.article_title = [];
-  this.article_link = [];
-  this.article_description = [];
-  this.article_postedAt = [];
+  this.titles = [];
+  this.links = [];
+  this.descriptions = [];
+  this.postedAtDates = [];
 
   // Iterates over items in the Parsed url
   this.feed.items.forEach((item) => {
-    this.article_title.push(item.title);
-    this.article_link.push(item.link);
-    this.article_description.push(item.contentSnippet);
+    this.titles.push(item.title);
+    this.links.push(item.link);
+    this.descriptions.push(item.contentSnippet);
     // eslint-disable-next-line no-unused-expressions
-    item.pubDate ? this.article_postedAt.push(item.pubDate) : this.article_postedAt.push(today());
+    item.pubDate ? this.postedAtDates.push(item.pubDate) : this.postedAtDates.push(today());
   });
 
   // Checks if Content title is posted already; If true, will reiterate again from the beginning
-  if (doneNews.includes(this.article_title[this.index])) {
+  if (doneNews.includes(this.titles[this.index])) {
     // console.log("Already Posted, Will look for other articles");
     // await redo();
     return;
@@ -88,7 +88,7 @@ async function rssTask(source) {
 
   /* Reads the articles date and splits the year from the format,if not
         If not 2019, then redo */
-  const postedAt = await this.article_postedAt[this.index].split(' ');
+  const postedAt = await this.postedAtDates[this.index].split(' ');
   const Outdated = await postedAt[3] < 2019;
   if (Outdated) {
     // await redo();
@@ -100,15 +100,15 @@ async function rssTask(source) {
     .setAuthor(this.feed.title.includes('CNN') ? this.feed.title = 'CNN.com' : this.feed.title, client.user.avatarURL())
     .setThumbnail(newsOutlet(this.feed.title))
     .setColor('#4B0000')
-    .addField(this.article_title[this.index], `${this.article_description[this.index] ? this.article_description[this.index] : 'No descriptions.'}`)
-    .addField('Read this story:', this.article_link[this.index])
-    .setFooter(`News-Bot does not represent nor endorse ${this.feed.title.includes('CNN') ? this.feed.title = 'CNN.com' : this.feed.title}. • ${this.article_postedAt[this.index].includes('+0000') ? this.article_postedAt[this.index].replace('+0000', 'GMT') : this.article_postedAt[this.index]}`);
+    .addField(this.titles[this.index], `${this.descriptions[this.index] ? this.descriptions[this.index] : 'No descriptions.'}`)
+    .addField('Read this story:', this.links[this.index])
+    .setFooter(`News-Bot does not represent nor endorse ${this.feed.title.includes('CNN') ? this.feed.title = 'CNN.com' : this.feed.title}. • ${this.postedAtDates[this.index].includes('+0000') ? this.postedAtDates[this.index].replace('+0000', 'GMT') : this.postedAtDates[this.index]}`);
 
   if (channelsRss.length === 0) {
     console.log('No News channels are currently listed, please assign channels');
     return;
   }
-  doneNews.push(this.article_title[this.index]);
+  doneNews.push(this.titles[this.index]);
   console.log(doneNews.length);
 
   // Sends news to registered channels
